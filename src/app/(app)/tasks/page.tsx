@@ -11,14 +11,29 @@ function parsePage(value?: string) {
   return Number.isInteger(page) && page > 0 ? page : 1;
 }
 
+function pageHref(page: number, query: string) {
+  const params = new URLSearchParams({ page: String(page) });
+
+  if (query) {
+    params.set("q", query);
+  }
+
+  return `/tasks?${params.toString()}`;
+}
+
 export default async function TasksPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; notice?: string }>;
+  searchParams: Promise<{ page?: string; notice?: string; q?: string }>;
 }) {
   const session = await requireSession();
   const params = await searchParams;
-  const result = await listTasks(session.user.id, parsePage(params.page));
+  const query = typeof params.q === "string" ? params.q.trim().slice(0, 120) : "";
+  const result = await listTasks(
+    session.user.id,
+    parsePage(params.page),
+    query,
+  );
 
   return (
     <main className="page-shell">
@@ -32,6 +47,28 @@ export default async function TasksPage({
           <span aria-hidden="true">+</span> New task
         </a>
       </div>
+
+      <form className="task-search" action="/tasks" method="get" role="search">
+        <label htmlFor="task-query">Search tasks</label>
+        <div className="task-search-controls">
+          <input
+            id="task-query"
+            name="q"
+            type="search"
+            maxLength={120}
+            defaultValue={result.query}
+            placeholder="Search titles and descriptions"
+          />
+          <button className="button" type="submit">
+            Search
+          </button>
+          {result.query ? (
+            <a className="quiet-link" href="/tasks">
+              Clear
+            </a>
+          ) : null}
+        </div>
+      </form>
 
       <Notice value={params.notice} />
 
@@ -56,23 +93,37 @@ export default async function TasksPage({
           {result.pageCount > 1 ? (
             <nav className="pagination" aria-label="Task pages">
               {result.page > 1 ? (
-                <a href={`/tasks?page=${result.page - 1}`}>← Newer tasks</a>
+                <a href={pageHref(result.page - 1, result.query)}>
+                  ← Newer tasks
+                </a>
               ) : (
                 <span />
               )}
               {result.page < result.pageCount ? (
-                <a href={`/tasks?page=${result.page + 1}`}>Older tasks →</a>
+                <a href={pageHref(result.page + 1, result.query)}>
+                  Older tasks →
+                </a>
               ) : null}
             </nav>
           ) : null}
         </>
       ) : (
         <section className="empty-state">
-          <h2>A clear page to start</h2>
-          <p>Your tasks will appear here, newest first.</p>
-          <a className="button" href="/tasks/new">
-            Create your first task
-          </a>
+          <h2>{result.query ? "No matching tasks" : "A clear page to start"}</h2>
+          <p>
+            {result.query
+              ? `No tasks match "${result.query}". Try another search.`
+              : "Your tasks will appear here, newest first."}
+          </p>
+          {result.query ? (
+            <a className="button button-secondary" href="/tasks">
+              Clear search
+            </a>
+          ) : (
+            <a className="button" href="/tasks/new">
+              Create your first task
+            </a>
+          )}
         </section>
       )}
     </main>

@@ -93,4 +93,16 @@ describe("task repository", () => {
     expect(firstPage.pageCount).toBe(2);
     expect(secondPage.tasks).toHaveLength(2);
   });
+
+  it("searches titles and descriptions only within the current account", async () => {
+    await createTask("owner-one", {
+      title: "Project Atlas",
+      description: "Prepare 100% of the release notes.",
+    });
+
+    expect((await listTasks("owner-one", 1, "atlas")).total).toBe(1);
+    expect((await listTasks("owner-one", 1, "RELEASE NOTES")).total).toBe(1);
+    expect((await listTasks("owner-one", 1, "100%")).total).toBe(1);
+    expect((await listTasks("owner-two", 1, "atlas")).total).toBe(0);
+  });
 });

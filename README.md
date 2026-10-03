@@ -1,6 +1,6 @@
 # TodAI
 
-TodAI is a multi-page task manager built with Next.js App Router, TypeScript, Better Auth, Drizzle, and SQLite. Account and task workflows are separate server-rendered pages. Navigation uses ordinary links and form posts that redirect to a new document; the UI does not depend on client-side route transitions.
+TodAI is a multi-page task manager built with Next.js App Router, TypeScript, Better Auth, Drizzle, and SQLite. Account and task workflows are separate server-rendered pages. Navigation uses ordinary links and form posts that redirect to a new document; the UI does not depend on client-side route transitions. Search filters the current user's tasks by title or description and retains the active query when paging through results.
 
 ## Requirements
 

@@ -229,6 +229,35 @@ h1 {
 	font-size: 13px;
 }
 
+.task-search {
+	margin-bottom: 24px;
+}
+
+.task-search > label {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.task-search-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.task-search input {
+	width: min(100%, 440px);
+	min-width: 0;
+	min-height: 44px;
+	padding: 10px 12px;
+	border: 1px solid #bdcbc3;
+	border-radius: 3px;
+	color: var(--ink);
+	background: white;
+	font-size: 15px;
+}
+
 .task-list {
 	border-top: 1px solid var(--line);
 }
@@ -490,6 +519,14 @@ h1 {
 	.task-row {
 		grid-template-columns: minmax(0, 1fr);
 		gap: 14px;
+	}
+
+	.task-search-controls {
+		flex-wrap: wrap;
+	}
+
+	.task-search input {
+		flex-basis: 100%;
 	}
 
 	.task-actions {
