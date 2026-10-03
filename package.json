@@ -6,6 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "pree2e": "cross-env NODE_ENV=test BETTER_AUTH_SECRET=cypress-local-test-secret-at-least-32-characters-long DATABASE_URL=file:./data/cypress.db drizzle-kit migrate",
+    "e2e": "cross-env NODE_ENV=test NEXT_DIST_DIR=.next-e2e BETTER_AUTH_SECRET=cypress-local-test-secret-at-least-32-characters-long BETTER_AUTH_URL=http://localhost:3100 DATABASE_URL=file:./data/cypress.db start-server-and-test e2e:server http://localhost:3100 e2e:run",
+    "e2e:server": "next dev --hostname localhost --port 3100",
+    "e2e:run": "cypress run",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -14,7 +18,7 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "engines": {
-    "node": ">=22.13.0"
+    "node": ">=26.10.0"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.7.7",
@@ -32,8 +36,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "auth": "^1.7.7",
+    "cross-env": "^10.1.0",
+    "cypress": "^16.1.1",
     "drizzle-kit": "^0.31.11",
     "eslint": "^9",
+    "start-server-and-test": "^3.0.12",
     "tailwindcss": "^4",
     "typescript": "^5",
     "typescript-eslint": "^8.71.0",

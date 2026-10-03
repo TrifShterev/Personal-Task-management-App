@@ -41,6 +41,29 @@ export function TaskForm({ action, submitLabel, task, error }: TaskFormProps) {
           />
           <p className="field-hint">Optional. Up to 10,000 characters.</p>
         </div>
+        <div className="field">
+          <label htmlFor="priority">Priority</label>
+          <select
+            id="priority"
+            name="priority"
+            defaultValue={String(task?.priority ?? 3)}
+          >
+            <option value="1">1 - Highest</option>
+            <option value="2">2 - High</option>
+            <option value="3">3 - Normal</option>
+            <option value="4">4 - Lowest</option>
+          </select>
+        </div>
+        <div className="field">
+          <label htmlFor="dueDate">Due date</label>
+          <input
+            id="dueDate"
+            name="dueDate"
+            type="date"
+            defaultValue={task?.dueDate ?? ""}
+          />
+          <p className="field-hint">Optional.</p>
+        </div>
         <div className="form-actions">
           <button className="button" type="submit">
             {submitLabel}

@@ -10,6 +10,7 @@ let deleteTask: typeof import("@/lib/tasks").deleteTask;
 let getTask: typeof import("@/lib/tasks").getTask;
 let listTasks: typeof import("@/lib/tasks").listTasks;
 let updateTask: typeof import("@/lib/tasks").updateTask;
+const defaultTaskFields = { priority: 3, dueDate: null };
 
 describe("task repository", () => {
   beforeAll(async () => {
@@ -61,6 +62,7 @@ describe("task repository", () => {
     const created = await createTask("owner-one", {
       title: "Plan the week",
       description: "Write down the next steps.",
+      ...defaultTaskFields,
     });
 
     expect(created.title).toBe("Plan the week");
@@ -70,6 +72,7 @@ describe("task repository", () => {
       await updateTask("owner-two", created.id, {
         title: "Changed by another user",
         description: "Not allowed",
+        ...defaultTaskFields,
       }),
     ).toBe(false);
     expect(await deleteTask("owner-two", created.id)).toBe(false);
@@ -82,6 +85,7 @@ describe("task repository", () => {
       await createTask("owner-one", {
         title: `Task ${index}`,
         description: "",
+        ...defaultTaskFields,
       });
     }
 
@@ -98,6 +102,7 @@ describe("task repository", () => {
     await createTask("owner-one", {
       title: "Project Atlas",
       description: "Prepare 100% of the release notes.",
+      ...defaultTaskFields,
     });
 
     expect((await listTasks("owner-one", 1, "atlas")).total).toBe(1);

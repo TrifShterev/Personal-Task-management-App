@@ -11,6 +11,8 @@ export const tasks = sqliteTable(
       .references(() => user.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     description: text("description").notNull().default(""),
+    priority: integer("priority").notNull().default(3),
+    dueDate: text("due_date"),
     createdAt: integer("created_at", { mode: "timestamp_ms" })
       .notNull()
       .$defaultFn(() => new Date()),

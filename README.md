@@ -4,7 +4,7 @@ TodAI is a multi-page task manager built with Next.js App Router, TypeScript, Be
 
 ## Requirements
 
-- Node.js 22.13 or newer
+- Node.js 26.10.0 or newer (version pinned in `.nvmrc`)
 - npm
 
 ## Local setup
@@ -25,9 +25,14 @@ The default database is `data/todai.db`, which is ignored by Git. Set `DATABASE_
 - `npm run lint` — run ESLint
 - `npm run typecheck` — run TypeScript checks
 - `npm test` — run validation and SQLite repository tests
+- `npm run e2e` — migrate the isolated Cypress database, start the app, and run end-to-end tests
 - `npm run auth:generate` — regenerate Better Auth's Drizzle schema after auth configuration changes
 - `npm run db:generate` — create a Drizzle migration from schema changes
 - `npm run db:migrate` — apply pending migrations
+
+## End-to-end tests
+
+Cypress specs live in `tests/e2e/`. Each task workflow creates its own account, so create, edit, and delete tests can run independently. E2E runs use `data/cypress.db` rather than the local development database.
 
 ## Data and deployment
 

@@ -2,10 +2,33 @@ import { NextResponse } from "next/server";
 import { dbReady } from "@/db/client";
 import { auth } from "@/lib/auth";
 
+function requestOrigin(request: Request) {
+  const requestUrl = new URL(request.url);
+  const host =
+    request.headers.get("x-forwarded-host")?.split(",")[0].trim() ||
+    request.headers.get("host") ||
+    requestUrl.host;
+  const forwardedProtocol = request.headers
+    .get("x-forwarded-proto")
+    ?.split(",")[0]
+    .trim();
+  const protocol = forwardedProtocol
+    ? forwardedProtocol.endsWith(":")
+      ? forwardedProtocol
+      : `${forwardedProtocol}:`
+    : requestUrl.protocol;
+
+  return new URL(`${protocol}//${host}`).origin;
+}
+
 export function sameOriginError(request: Request): NextResponse | null {
   const origin = request.headers.get("origin");
 
-  if (!origin || new URL(origin).origin !== new URL(request.url).origin) {
+  try {
+    if (!origin || new URL(origin).origin !== requestOrigin(request)) {
+      return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+    }
+  } catch {
     return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
   }
 
@@ -13,7 +36,7 @@ export function sameOriginError(request: Request): NextResponse | null {
 }
 
 export function redirectTo(request: Request, path: string, status = 303) {
-  return NextResponse.redirect(new URL(path, request.url), status);
+  return NextResponse.redirect(new URL(path, requestOrigin(request)), status);
 }
 
 export async function requestSession(request: Request) {
@@ -35,12 +58,13 @@ export async function submitAuthForm(
   }
 
   await dbReady;
+  const origin = requestOrigin(request);
   const authResponse = await auth.handler(
-    new Request(new URL(`/api/auth/${endpoint}`, request.url), {
+    new Request(new URL(`/api/auth/${endpoint}`, origin), {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        origin: new URL(request.url).origin,
+        origin,
         cookie: request.headers.get("cookie") ?? "",
         "user-agent": request.headers.get("user-agent") ?? "",
       },

@@ -21,6 +21,8 @@ export async function POST(request: Request) {
   const input = taskInputSchema.safeParse({
     title: form.get("title"),
     description: form.get("description"),
+    priority: form.get("priority") ?? undefined,
+    dueDate: form.get("dueDate") ?? undefined,
   });
 
   if (!input.success) {

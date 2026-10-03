@@ -16,9 +16,23 @@ export function TaskRow({ task }: { task: Task }) {
         {task.description ? (
           <p className="task-description">{task.description}</p>
         ) : null}
-        <time className="task-date" dateTime={task.updatedAt.toISOString()}>
-          Updated {date}
-        </time>
+        <div className="task-meta">
+          <span className="task-priority">Priority {task.priority}</span>
+          {task.dueDate ? (
+            <span className="task-due-date">
+              Due{" "}
+              <time dateTime={task.dueDate}>
+                {new Intl.DateTimeFormat("en", {
+                  dateStyle: "medium",
+                  timeZone: "UTC",
+                }).format(new Date(`${task.dueDate}T00:00:00Z`))}
+              </time>
+            </span>
+          ) : null}
+          <time className="task-date" dateTime={task.updatedAt.toISOString()}>
+            Updated {date}
+          </time>
+        </div>
       </div>
       <div className="task-actions" aria-label={`Actions for ${task.title}`}>
         <a href={`/tasks/${encodeURIComponent(task.id)}/edit`}>Edit</a>

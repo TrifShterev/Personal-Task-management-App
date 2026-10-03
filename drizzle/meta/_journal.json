@@ -8,6 +8,13 @@
       "when": 1791024887603,
       "tag": "0000_large_wind_dancer",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1791042377049,
+      "tag": "0001_simple_sasquatch",
+      "breakpoints": true
     }
   ]
 }

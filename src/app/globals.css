@@ -289,9 +289,22 @@ h1 {
 	white-space: pre-wrap;
 }
 
-.task-date {
-	display: block;
+.task-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 8px 14px;
 	margin-top: 10px;
+	color: var(--muted);
+	font-size: 12px;
+}
+
+.task-priority {
+	font-weight: 700;
+}
+
+.task-date {
+	margin-left: auto;
 	color: #7c8985;
 	font-size: 12px;
 }

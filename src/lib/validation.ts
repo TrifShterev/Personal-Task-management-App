@@ -14,6 +14,13 @@ export const signInSchema = z.object({
 export const taskInputSchema = z.object({
   title: z.string().trim().min(1).max(120),
   description: z.string().trim().max(10000).default(""),
+  priority: z.coerce.number().int().min(1).max(4).default(3),
+  dueDate: z
+    .preprocess(
+      (value) => (value === "" || value === undefined ? null : value),
+      z.iso.date().nullable(),
+    )
+    .default(null),
 });
 
 export type TaskInput = z.infer<typeof taskInputSchema>;
