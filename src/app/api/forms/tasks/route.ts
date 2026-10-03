@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   });
 
   if (!input.success) {
-    return redirectTo(request, "/tasks/new?error=invalid");
+    return redirectTo(request, "/tasks?newTask=1&taskError=invalid");
   }
 
   await createTask(session.user.id, input.data);

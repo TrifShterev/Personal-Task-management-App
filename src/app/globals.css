@@ -2,17 +2,25 @@
 
 :root {
 	color-scheme: light;
-	--paper: #f4f7f3;
+	--paper: #fefce8;
 	--surface: #ffffff;
-	--ink: #1b302d;
-	--muted: #64736f;
-	--line: #d9e2dc;
-	--teal: #08756c;
-	--teal-deep: #075b55;
-	--coral: #bc523c;
-	--soft-teal: #e5f1ec;
-	--danger-bg: #fff0eb;
-	--focus: #e6a136;
+	--ink: #3d3d2e;
+	--muted: #8a8a6e;
+	--line: #e8e6d0;
+	--light-blue: #7dd3fc;
+	--light-blue-deep: #38bdf8;
+	--light-green: #86efac;
+	--light-green-deep: #4ade80;
+	--light-yellow: #fde047;
+	--light-yellow-deep: #facc15;
+	--light-orange: #fdba74;
+	--light-orange-deep: #fb923c;
+	--soft-blue: #e0f2fe;
+	--soft-green: #dcfce7;
+	--soft-yellow: #fef9c3;
+	--soft-orange: #ffedd5;
+	--danger-bg: #fff7ed;
+	--focus: #fdba74;
 	font-family: "Trebuchet MS", "Gill Sans", sans-serif;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -31,7 +39,7 @@ body {
 		0deg,
 		transparent,
 		transparent 31px,
-		rgb(31 84 71 / 3%) 32px
+		rgb(61 61 46 / 3%) 32px
 	);
 }
 
@@ -86,7 +94,7 @@ textarea {
 	place-items: center;
 	border-radius: 9px 9px 9px 2px;
 	color: white;
-	background: var(--teal);
+	background: var(--light-blue-deep);
 	font-family: "Trebuchet MS", sans-serif;
 	font-size: 17px;
 }
@@ -104,7 +112,7 @@ textarea {
 }
 
 .quiet-link {
-	color: var(--teal-deep);
+	color: var(--light-blue-deep);
 	font-size: 14px;
 	font-weight: 700;
 	text-decoration-thickness: 1px;
@@ -142,7 +150,7 @@ textarea {
 
 .eyebrow {
 	margin: 0 0 9px;
-	color: var(--teal);
+	color: var(--light-blue-deep);
 	font-size: 11px;
 	font-weight: 700;
 	letter-spacing: 1.4px;
@@ -181,10 +189,10 @@ h1 {
 	justify-content: center;
 	gap: 8px;
 	padding: 0 17px;
-	border: 1px solid var(--teal);
+	border: 1px solid var(--light-blue-deep);
 	border-radius: 4px;
 	color: white;
-	background: var(--teal);
+	background: var(--light-blue-deep);
 	cursor: pointer;
 	font-size: 14px;
 	font-weight: 700;
@@ -193,8 +201,9 @@ h1 {
 }
 
 .button:hover {
-	border-color: var(--teal-deep);
-	background: var(--teal-deep);
+	border-color: var(--light-blue);
+	background: var(--light-blue);
+	color: var(--ink);
 }
 
 .button-secondary {
@@ -204,19 +213,21 @@ h1 {
 }
 
 .button-secondary:hover {
-	border-color: #aebdb5;
+	border-color: var(--muted);
 	color: var(--ink);
-	background: #f9fbf9;
+	background: var(--soft-yellow);
 }
 
 .button-danger {
-	border-color: var(--coral);
-	background: var(--coral);
+	border-color: var(--light-orange-deep);
+	background: var(--light-orange-deep);
+	color: white;
 }
 
 .button-danger:hover {
-	border-color: #963f2e;
-	background: #963f2e;
+	border-color: var(--light-orange);
+	background: var(--light-orange);
+	color: var(--ink);
 }
 
 .list-summary {
@@ -251,7 +262,7 @@ h1 {
 	min-width: 0;
 	min-height: 44px;
 	padding: 10px 12px;
-	border: 1px solid #bdcbc3;
+	border: 1px solid var(--line);
 	border-radius: 3px;
 	color: var(--ink);
 	background: white;
@@ -264,11 +275,48 @@ h1 {
 
 .task-row {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: 40px minmax(0, 1fr) auto;
 	align-items: start;
-	gap: 24px;
+	gap: 16px;
 	padding: 21px 0 20px;
 	border-bottom: 1px solid var(--line);
+}
+
+.task-completion-form {
+	margin: 0;
+}
+
+.task-completion-toggle {
+	display: grid;
+	width: 36px;
+	height: 36px;
+	place-items: center;
+	padding: 0;
+	border: 2px solid var(--muted);
+	border-radius: 50%;
+	color: var(--muted);
+	background: var(--surface);
+	cursor: pointer;
+	font-size: 21px;
+	font-weight: 700;
+	line-height: 1;
+	transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+
+.task-completion-toggle:hover {
+	border-color: var(--light-green-deep);
+	color: #15803d;
+}
+
+.task-row-completed .task-completion-toggle {
+	border-color: #16a34a;
+	color: white;
+	background: #16a34a;
+}
+
+.task-row-completed .task-title {
+	color: var(--muted);
+	text-decoration: line-through;
 }
 
 .task-title {
@@ -305,7 +353,7 @@ h1 {
 
 .task-date {
 	margin-left: auto;
-	color: #7c8985;
+	color: var(--muted);
 	font-size: 12px;
 }
 
@@ -317,12 +365,12 @@ h1 {
 }
 
 .task-actions a {
-	color: var(--teal-deep);
+	color: var(--light-blue-deep);
 	text-underline-offset: 4px;
 }
 
 .task-actions a:last-child {
-	color: var(--coral);
+	color: var(--light-orange-deep);
 }
 
 .empty-state {
@@ -354,7 +402,7 @@ h1 {
 }
 
 .pagination a {
-	color: var(--teal-deep);
+	color: var(--light-blue-deep);
 	font-weight: 700;
 	text-decoration-thickness: 1px;
 	text-underline-offset: 4px;
@@ -369,6 +417,61 @@ h1 {
 	border: 1px solid var(--line);
 	border-radius: 5px;
 	background: var(--surface);
+}
+
+.task-dialog {
+	width: min(calc(100% - 32px), 650px);
+	max-width: none;
+	max-height: min(90vh, 900px);
+	margin: auto;
+	padding: 0;
+	overflow: auto;
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	color: var(--ink);
+	background: var(--surface);
+	box-shadow: 0 24px 70px rgb(61 61 46 / 18%);
+}
+
+.task-dialog::backdrop {
+	background: rgb(61 61 46 / 30%);
+}
+
+.task-dialog-header {
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 22px 28px 17px;
+	border-bottom: 1px solid var(--line);
+}
+
+.task-dialog-header .eyebrow {
+	margin-bottom: 5px;
+}
+
+.task-dialog-header h2 {
+	margin: 0;
+	font-size: 28px;
+	line-height: 1.2;
+}
+
+.dialog-close {
+	min-height: 40px;
+	padding: 0 10px;
+	border: 1px solid var(--line);
+	border-radius: 3px;
+	color: var(--ink);
+	background: var(--surface);
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.task-dialog .form-panel {
+	padding: 23px 28px 28px;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
 }
 
 .field {
@@ -387,7 +490,7 @@ h1 {
 	width: 100%;
 	min-height: 44px;
 	padding: 10px 12px;
-	border: 1px solid #bdcbc3;
+	border: 1px solid var(--line);
 	border-radius: 3px;
 	color: var(--ink);
 	background: white;
@@ -402,7 +505,7 @@ h1 {
 
 .field input::placeholder,
 .field textarea::placeholder {
-	color: #8a9691;
+	color: var(--muted);
 }
 
 .field-hint {
@@ -422,8 +525,8 @@ h1 {
 .form-error,
 .notice {
 	padding: 12px 15px;
-	border-left: 3px solid var(--coral);
-	color: #793728;
+	border-left: 3px solid var(--light-orange-deep);
+	color: #7c4d1a;
 	background: var(--danger-bg);
 	font-size: 14px;
 	line-height: 1.5;
@@ -431,9 +534,9 @@ h1 {
 
 .notice {
 	margin-bottom: 22px;
-	border-color: var(--teal);
-	color: var(--teal-deep);
-	background: var(--soft-teal);
+	border-color: var(--light-blue-deep);
+	color: var(--light-blue-deep);
+	background: var(--soft-blue);
 }
 
 .auth-shell {
@@ -451,7 +554,7 @@ h1 {
 .auth-panel {
 	padding: 30px;
 	border: 1px solid var(--line);
-	border-top: 4px solid var(--teal);
+	border-top: 4px solid var(--light-blue-deep);
 	border-radius: 5px;
 	background: var(--surface);
 }
@@ -481,7 +584,7 @@ h1 {
 }
 
 .auth-switch a {
-	color: var(--teal-deep);
+	color: var(--light-blue-deep);
 	font-weight: 700;
 	text-underline-offset: 3px;
 }
@@ -489,8 +592,8 @@ h1 {
 .confirm-panel {
 	max-width: 580px;
 	padding: 27px 30px 30px;
-	border: 1px solid #e8c5b8;
-	border-left: 4px solid var(--coral);
+	border: 1px solid var(--light-orange);
+	border-left: 4px solid var(--light-orange-deep);
 	background: var(--surface);
 }
 
@@ -530,7 +633,7 @@ h1 {
 	}
 
 	.task-row {
-		grid-template-columns: minmax(0, 1fr);
+		grid-template-columns: 36px minmax(0, 1fr);
 		gap: 14px;
 	}
 
@@ -543,6 +646,7 @@ h1 {
 	}
 
 	.task-actions {
+		grid-column: 2;
 		padding-top: 0;
 	}
 

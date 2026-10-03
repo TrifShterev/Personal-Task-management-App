@@ -77,6 +77,20 @@ export async function updateTask(
   return Boolean(task);
 }
 
+export async function toggleTaskCompletion(userId: string, taskId: string) {
+  await dbReady;
+  const [task] = await db
+    .update(tasks)
+    .set({
+      completed: sql`not ${tasks.completed}`,
+      updatedAt: new Date(),
+    })
+    .where(and(eq(tasks.id, taskId), eq(tasks.userId, userId)))
+    .returning({ completed: tasks.completed });
+
+  return task?.completed ?? null;
+}
+
 export async function deleteTask(userId: string, taskId: string) {
   await dbReady;
   const [task] = await db

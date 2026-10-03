@@ -10,8 +10,27 @@ export function TaskRow({ task }: { task: Task }) {
   }).format(task.updatedAt);
 
   return (
-    <article className="task-row">
-      <div>
+    <article className={`task-row${task.completed ? " task-row-completed" : ""}`}>
+      <form
+        action={`/api/forms/tasks/${encodeURIComponent(task.id)}/toggle-completion`}
+        className="task-completion-form"
+        method="post"
+      >
+        <button
+          aria-label={
+            task.completed
+              ? `Mark ${task.title} as incomplete`
+              : `Mark ${task.title} as completed`
+          }
+          aria-pressed={task.completed}
+          className="task-completion-toggle"
+          title={task.completed ? "Mark as incomplete" : "Mark as completed"}
+          type="submit"
+        >
+          <span aria-hidden="true">✓</span>
+        </button>
+      </form>
+      <div className="task-content">
         <h2 className="task-title">{task.title}</h2>
         {task.description ? (
           <p className="task-description">{task.description}</p>

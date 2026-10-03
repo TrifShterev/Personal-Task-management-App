@@ -15,8 +15,12 @@ export function signUpAndOpenTasks() {
 }
 
 export function createTask(title: string, description: string) {
-  cy.contains("a", "New task").click();
-  cy.location("pathname").should("eq", "/tasks/new");
+  cy.get(".page-heading button[data-hydrated='true']")
+    .should("have.attr", "data-hydrated", "true")
+    .click();
+  cy.location("pathname").should("eq", "/tasks");
+  cy.get("dialog").should("have.length", 1);
+  cy.get("dialog[open]").should("be.visible");
   cy.get("#title").type(title);
   if (description) {
     cy.get("#description").type(description);

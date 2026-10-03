@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Notice } from "@/components/notice";
+import { NewTaskDialog } from "@/components/new-task-dialog";
 import { TaskRow } from "@/components/task-row";
+import { TaskForm } from "@/components/task-form";
 import { listTasks } from "@/lib/tasks";
 import { requireSession } from "@/lib/session";
 
@@ -24,7 +26,13 @@ function pageHref(page: number, query: string) {
 export default async function TasksPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; notice?: string; q?: string }>;
+  searchParams: Promise<{
+    newTask?: string;
+    notice?: string;
+    page?: string;
+    q?: string;
+    taskError?: string;
+  }>;
 }) {
   const session = await requireSession();
   const params = await searchParams;
@@ -43,9 +51,24 @@ export default async function TasksPage({
           <h1>Tasks</h1>
           <p className="page-intro">Keep the next useful thing within reach.</p>
         </div>
-        <a className="button" href="/tasks/new">
-          <span aria-hidden="true">+</span> New task
-        </a>
+        <NewTaskDialog
+          openOnLoad={params.newTask === "1"}
+          triggerLabel={
+            result.total === 0 && !result.query
+              ? "Create your first task"
+              : "New task"
+          }
+        >
+          <TaskForm
+            action="/api/forms/tasks"
+            submitLabel="Create task"
+            error={
+              params.taskError === "invalid"
+                ? "Add a title and check the field lengths."
+                : undefined
+            }
+          />
+        </NewTaskDialog>
       </div>
 
       <form className="task-search" action="/tasks" method="get" role="search">
@@ -119,11 +142,7 @@ export default async function TasksPage({
             <a className="button button-secondary" href="/tasks">
               Clear search
             </a>
-          ) : (
-            <a className="button" href="/tasks/new">
-              Create your first task
-            </a>
-          )}
+          ) : null}
         </section>
       )}
     </main>

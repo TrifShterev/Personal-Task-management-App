@@ -22,7 +22,9 @@ describe("task priority and due date", () => {
     const dueDate = "2026-11-03";
 
     signUpAndOpenTasks();
-    cy.contains("a", "New task").click();
+    cy.get(".page-heading button[data-hydrated='true']")
+      .should("have.attr", "data-hydrated", "true")
+      .click();
     cy.get("#title").type(title);
     cy.get("#priority").select("1");
     cy.get("#dueDate").type(dueDate);

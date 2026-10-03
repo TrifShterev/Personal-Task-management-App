@@ -13,6 +13,7 @@ export const tasks = sqliteTable(
     description: text("description").notNull().default(""),
     priority: integer("priority").notNull().default(3),
     dueDate: text("due_date"),
+    completed: integer("completed", { mode: "boolean" }).notNull().default(false),
     createdAt: integer("created_at", { mode: "timestamp_ms" })
       .notNull()
       .$defaultFn(() => new Date()),

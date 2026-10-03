@@ -9,6 +9,7 @@ let createTask: typeof import("@/lib/tasks").createTask;
 let deleteTask: typeof import("@/lib/tasks").deleteTask;
 let getTask: typeof import("@/lib/tasks").getTask;
 let listTasks: typeof import("@/lib/tasks").listTasks;
+let toggleTaskCompletion: typeof import("@/lib/tasks").toggleTaskCompletion;
 let updateTask: typeof import("@/lib/tasks").updateTask;
 const defaultTaskFields = { priority: 3, dueDate: null };
 
@@ -28,6 +29,7 @@ describe("task repository", () => {
     deleteTask = repository.deleteTask;
     getTask = repository.getTask;
     listTasks = repository.listTasks;
+    toggleTaskCompletion = repository.toggleTaskCompletion;
     updateTask = repository.updateTask;
     closeDatabase = () => database.client.close();
 
@@ -66,6 +68,7 @@ describe("task repository", () => {
     });
 
     expect(created.title).toBe("Plan the week");
+    expect(created.completed).toBe(false);
     expect(await getTask("owner-one", created.id)).not.toBeNull();
     expect(await getTask("owner-two", created.id)).toBeNull();
     expect(
@@ -77,6 +80,21 @@ describe("task repository", () => {
     ).toBe(false);
     expect(await deleteTask("owner-two", created.id)).toBe(false);
     expect((await getTask("owner-one", created.id))?.title).toBe("Plan the week");
+    expect(await deleteTask("owner-one", created.id)).toBe(true);
+  });
+
+  it("toggles completion only for the owning account", async () => {
+    const created = await createTask("owner-one", {
+      title: "Submit the report",
+      description: "",
+      ...defaultTaskFields,
+    });
+
+    expect(await toggleTaskCompletion("owner-two", created.id)).toBeNull();
+    expect(await toggleTaskCompletion("owner-one", created.id)).toBe(true);
+    expect((await getTask("owner-one", created.id))?.completed).toBe(true);
+    expect(await toggleTaskCompletion("owner-one", created.id)).toBe(false);
+    expect((await getTask("owner-one", created.id))?.completed).toBe(false);
     expect(await deleteTask("owner-one", created.id)).toBe(true);
   });
 

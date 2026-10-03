@@ -15,6 +15,13 @@
       "when": 1791042377049,
       "tag": "0001_simple_sasquatch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791051929229,
+      "tag": "0002_conscious_chimera",
+      "breakpoints": true
     }
   ]
 }
